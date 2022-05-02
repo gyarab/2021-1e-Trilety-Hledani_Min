@@ -13,23 +13,20 @@ import javafx.stage.Stage;
 
 public class HelloApplication extends Application {
 
-
-    static final int sirka = 300;
-    static final int vyska = 300;
+    
     static final int radek = 10; //kolik poliček bude v radku
     static final int sloupec = 10;   //kolik bude ve sloupci
 
 
     static Parent createContent() {
         Pane root = new Pane();
-        root.setPrefSize(sirka, vyska);
+        root.setPrefSize(300, 300);
         int y;
         int x;
         for (y = 0; y < sloupec; y++) {
             for (x = 0; x < radek; x++) {
                 Tile tile;
                 tile = new Tile(x, y);
-
                 root.getChildren().add(tile);
 
 
@@ -42,8 +39,7 @@ public class HelloApplication extends Application {
     static class Tile extends StackPane {
         private final Text text = new Text();
         boolean i = true;
-        int policka = 30; //velikost políček
-        final Rectangle border = new Rectangle(policka, policka);
+        final Rectangle border = new Rectangle(30, 30);
 
 
         public Tile(int x, int y) {
@@ -385,20 +381,15 @@ public class HelloApplication extends Application {
                 i = false;
             }
 
-
             border.setFill(Color.BLUE);
-
-
             text.setVisible(false);
-
-
             border.setStroke(Color.RED);
 
 
             getChildren().addAll(border, text);
 
-            setTranslateX(x * policka);
-            setTranslateY(y * policka);
+            setTranslateX(x * 30);
+            setTranslateY(y * 30);
 
             setOnMouseClicked(e -> otevrit());
             setOnMouseReleased(e -> border.setFill(Color.RED));
