@@ -1,19 +1,23 @@
-package com.example.miny2;
+package com.example.demo5;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.io.IOException;
+import java.util.Objects;
+
+import static javafx.scene.paint.Color.*;
 
 
 public class HelloApplication extends Application {
 
-    
+
     static final int radek = 10; //kolik poliček bude v radku
     static final int sloupec = 10;   //kolik bude ve sloupci
 
@@ -25,8 +29,7 @@ public class HelloApplication extends Application {
         int x;
         for (y = 0; y < sloupec; y++) {
             for (x = 0; x < radek; x++) {
-                Tile tile;
-                tile = new Tile(x, y);
+               Tile tile = new Tile(x, y);
                 root.getChildren().add(tile);
 
 
@@ -36,10 +39,10 @@ public class HelloApplication extends Application {
         return root;
     }
 
-    static class Tile extends StackPane {
+    static class Tile extends StackPane  {
         private final Text text = new Text();
         boolean i = true;
-        final Rectangle border = new Rectangle(30, 30);
+        final Rectangle border;
 
 
         public Tile(int x, int y) {
@@ -47,7 +50,6 @@ public class HelloApplication extends Application {
             if (x == 0 & y == 0) {
                 i = false;
             }
-
             if (x == 0 & y == 1) {
                 i = false;
 
@@ -381,9 +383,10 @@ public class HelloApplication extends Application {
                 i = false;
             }
 
-            border.setFill(Color.BLUE);
+            border = new Rectangle(30, 30);
+            border.setFill(BLUE);
             text.setVisible(false);
-            border.setStroke(Color.RED);
+            border.setStroke(RED);
 
 
             getChildren().addAll(border, text);
@@ -391,12 +394,18 @@ public class HelloApplication extends Application {
             setTranslateX(x * 30);
             setTranslateY(y * 30);
 
-            setOnMouseClicked(e -> otevrit());
-            setOnMouseReleased(e -> border.setFill(Color.RED));
+            setOnMouseClicked(e -> {
+                try {
+                    otevrit(new Stage());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            setOnMouseReleased(e -> border.setFill(RED));
         }
 
 
-        public void otevrit() {
+        public void otevrit(Stage stage) throws IOException {
 
             if (i) {
                 text.setVisible(true);
@@ -404,7 +413,11 @@ public class HelloApplication extends Application {
             }
 
             if (!i) {
-                System.out.println("Prohra");
+
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
                 getScene().setRoot(createContent());
 
 
